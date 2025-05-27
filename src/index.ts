@@ -1,5 +1,6 @@
 import express from "express";
 import { summarize } from "./summarize";
+import { vectorStoreSearch } from "./vector_search";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,10 +22,15 @@ app.post('/generate', async (req, res): Promise<void> => {
         }
         
         const summary: string = await summarize(article_content);
+        const searchRes = await vectorStoreSearch(summary);
 
         res.json({
-            summary: summary,
-            originalContent: article_content 
+            ai_summary: summary,
+            searchResults: searchRes.map(result => ({
+                tag_name: result.getTagName(),
+                text: result.getTagDescription()
+            })),
+            original_input: article_content 
     });
     } catch (error) {
         console.error(error);
