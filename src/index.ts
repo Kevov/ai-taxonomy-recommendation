@@ -1,0 +1,43 @@
+import express from "express";
+import { summarize } from "./summarize";
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(express.json());
+
+// Routes
+app.get('/', (req, res) => {
+  res.send('Hello, Node.js Server lol!');
+});
+
+app.post('/generate', async (req, res): Promise<void> => {
+    const article_content = req.body.text;
+    try {
+        if (!article_content) {
+            res.status(400).json({ error: 'Article content is required for summarization.' });
+            return;
+        }
+        
+        const summary: string = await summarize(article_content);
+
+        res.json({
+            summary: summary,
+            originalContent: article_content 
+    });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while generating the response' });
+    }
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server is listening on http://localhost:${PORT}`);
+});
+
+// Endpoint to check the status of the server
+app.get('/ping', (_, res) => {
+	res.jsonp({ message: 'pong' });
+});
