@@ -1,5 +1,4 @@
 import { MongoDBAtlasVectorSearch } from "@langchain/mongodb";
-import { formatDocumentsAsString } from "langchain/util/document";
 import { MongoClient } from "mongodb";
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { SearchOutputModel } from "./searchOutputModel";
