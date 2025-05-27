@@ -22,7 +22,19 @@ The application runs under the route ```/generate``` as a GET request. By defaul
 The basic input format for the request body:
 ```json
 {
-    text: "<your article content here>"
+    "text": "<your article content here>"
 }
 ```
-
+The output format of the response body:
+```json
+{
+    "ai_summary": "<The search query created from your article>",
+    "searchResults": [
+        {
+            "tag_name": "<name>",
+            "text": "<description>"
+        }
+    ],
+    "original_input": "<your original article content>"
+}
+```
