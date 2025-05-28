@@ -1,6 +1,7 @@
 import express from "express";
 import { summarize } from "./summarize";
 import { vectorStoreSearch } from "./vector_search";
+import { vectorInput } from "./vector_input";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/generate', async (req, res): Promise<void> => {
-    const article_content = req.body.text;
+    const article_content: string = req.body.text;
     try {
         if (!article_content) {
             res.status(400).json({ error: 'Article content is required for summarization.' });
@@ -35,6 +36,16 @@ app.get('/generate', async (req, res): Promise<void> => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'An error occurred while generating the response' });
+    }
+});
+
+app.post('/input_tag', async (req, res): Promise<void> => {
+    const tagList = req.body.tagList;
+    try {
+        await vectorInput(tagList);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while inputting the tag to MongoDB Atlas' })
     }
 });
 
