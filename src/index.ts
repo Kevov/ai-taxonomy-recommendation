@@ -2,12 +2,18 @@ import express from "express";
 import { summarize } from "./summarize";
 import { vectorStoreSearch } from "./vector_search";
 import { vectorInput } from "./vector_input";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+
+app.use(cors({
+    origin: '*', // Allow all origins for simplicity; adjust as needed for security
+    methods: ['GET', 'POST'] // Allow specific methods
+}));
 
 // Routes
 app.get('/', (req, res) => {
