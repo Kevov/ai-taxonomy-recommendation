@@ -16,7 +16,7 @@ npm run build
 npm run start
 ```
 
-The application runs under the route ```/generate``` as a GET request. By default, when running on your local environment, the port will be 3000. So to get a response, your URL should be ```localhost:3000/generate```.
+The application runs under the route ```/generate``` as a POST request. By default, when running on your local environment, the port will be 3000. So to get a response, your URL should be ```localhost:3000/generate```.
 
 The basic input format for the request body:
 ```json
