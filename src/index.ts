@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
   res.send('Hello, Node.js Server lol!');
 });
 
-app.get('/generate', async (req, res): Promise<void> => {
+app.post('/generate', async (req, res): Promise<void> => {
     const article_content: string = req.body.text;
     try {
         if (!article_content) {
