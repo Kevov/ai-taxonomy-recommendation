@@ -16,11 +16,11 @@ export async function vectorStoreSearch(input: string): Promise<SearchOutputMode
         // Configure your Atlas collection
         const database = client.db("epic-tags");
         const collection = database.collection("tags2");
-        const embeddings = new GoogleGenerativeAIEmbeddings({
+        const embeddingModel = new GoogleGenerativeAIEmbeddings({
             model: "text-embedding-004",
             apiKey: GOOGLE_AI_KEY
         });
-        const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
+        const vectorStore = new MongoDBAtlasVectorSearch(embeddingModel, {
             collection,
             indexName: "default",
             textKey: "text",

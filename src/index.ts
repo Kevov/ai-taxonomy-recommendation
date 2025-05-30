@@ -2,6 +2,7 @@ import express from "express";
 import { summarize } from "./summarize";
 import { vectorStoreSearch } from "./vector_search";
 import { vectorInput } from "./vector_input";
+import { TagModel } from "./tagModel";
 import cors from "cors";
 
 const app = express();
@@ -46,9 +47,17 @@ app.post('/generate', async (req, res): Promise<void> => {
 });
 
 app.post('/input_tag', async (req, res): Promise<void> => {
-    const tagList = req.body.tagList;
+    const tagListObj = req.body.tagList;
+    
     try {
+        if (!tagListObj) {
+            res.status(400).json({ error: 'Tag list is required for inputting to MongoDB Atlas.' });
+            return;
+        }
+        console.log("Received tag list:", tagListObj);
+        const tagList: TagModel[] = tagListObj.map((tag: { tag_name: string; text: string }) => TagModel.fromObject(tag));
         await vectorInput(tagList);
+        res.json({ message: 'Tag input successful' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'An error occurred while inputting the tag to MongoDB Atlas' })
