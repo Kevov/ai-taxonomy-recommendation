@@ -56,8 +56,11 @@ app.post('/input_tag', async (req, res): Promise<void> => {
         }
         console.log("Received tag list:", tagListObj);
         const tagList: TagModel[] = tagListObj.map((tag: { tag_name: string; text: string }) => TagModel.fromObject(tag));
-        await vectorInput(tagList);
-        res.json({ message: 'Tag input successful' });
+        const insertedTagsNum: number = await vectorInput(tagList);
+        res.json({ 
+            message: 'Tag input successful',
+            tags_inserted: insertedTagsNum 
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'An error occurred while inputting the tag to MongoDB Atlas' })

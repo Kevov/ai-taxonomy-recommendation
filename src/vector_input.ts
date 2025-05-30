@@ -5,7 +5,7 @@ import { TagModel } from "./tagModel"; // Assuming you have a TagModel class def
 const GOOGLE_AI_KEY = process.env.GOOGLE_GEMINI_KEY;
 const MONGO_ATLAS_CONNECTION_URI = process.env.MONGO_ATLAS_CONNECTION_URI;
 
-export async function vectorInput(tagList: TagModel[]): Promise<void> {
+export async function vectorInput(tagList: TagModel[]): Promise<number> {
     if (!MONGO_ATLAS_CONNECTION_URI) {
             throw new Error("MONGO_ATLAS_CONNECTION_URI is not set in the environment variables.");
         }
@@ -37,8 +37,11 @@ export async function vectorInput(tagList: TagModel[]): Promise<void> {
         // Continue processing documents if an error occurs during an operation
         const options = { ordered: false };
         // Insert documents with embeddings into Atlas
-        const result = await collection.insertMany(insertTags, options);  
-        console.log("Count of documents inserted: " + result.insertedCount);
+        if (insertTags.length > 0) {
+            const result = await collection.insertMany(insertTags, options);
+            console.log("Count of documents inserted: " + result.insertedCount);
+        }
+        return insertTags.length
     } finally {
         await client.close();
     }
