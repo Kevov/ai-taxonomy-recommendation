@@ -28,7 +28,7 @@ export async function vectorStoreSearch(input: string): Promise<SearchOutputMode
         });
 
         // Perform similarity search
-        const results = await vectorStore.similaritySearch(input, 4); // 4 is the number of results to return
+        const results = await vectorStore.similaritySearch(input, 6); // 6 is the number of results to return
 
         const formattedResults: SearchOutputModel[] = results.map(doc => {
             try {
